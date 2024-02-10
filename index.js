@@ -10,6 +10,10 @@ app.use(charactersRoutes);
 
 const comicsRoutes = require("./routes/comics");
 app.use(comicsRoutes);
+app.get("/", (req, res) => {
+  console.log("route /");
+  res.status(200).json(data);
+});
 
 app.all("*", (req, res) => {
   console.log("route not found");
