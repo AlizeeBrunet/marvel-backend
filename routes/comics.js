@@ -27,8 +27,8 @@ router.get("/comics", async (req, res) => {
 // une route pour récuperer dans les comics un personnage specifique
 router.get("/comics/:characterId", async (req, res) => {
   try {
-    console.log("query =>", req.query);
-    console.log("params =>", req.params.characterId);
+    console.log(req.query);
+    console.log(req.params.characterId);
     const response = await axios.get(
       `https://lereacteur-marvel-api.herokuapp.com/comics/${req.params.characterId}?apiKey=${process.env.MARVEL_API_KEY}`
     );
@@ -42,17 +42,15 @@ router.get("/comics/:characterId", async (req, res) => {
 // une route pour récuperer un comic bien specifique
 router.get("/comic/:comicId", async (req, res) => {
   try {
-    console.log("query =>", req.query);
-    console.log("params =>", req.params.comicId);
+    console.log(req.query);
+    console.log(req.params.comicId);
     const response = await axios.get(
       `https://lereacteur-marvel-api.herokuapp.com/comic/${req.params.comicId}?apiKey=${process.env.MARVEL_API_KEY}`
     );
     if (response.data.comics && Array.isArray(response.data.comics)) {
       console.log(response.data.comics.length);
     } else {
-      console.log(
-        "La propriété 'comics' n'existe pas ou n'est pas un tableau."
-      );
+      console.log("La propriété 'comics' n'existe pas");
     }
 
     return res.status(200).json(response.data);
