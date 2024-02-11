@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 
-// une route pour récup les comics
+// une route pour récupérer les comics
 router.get("/comics", async (req, res) => {
   try {
     let query = `apiKey=${process.env.MARVEL_API_KEY}`;

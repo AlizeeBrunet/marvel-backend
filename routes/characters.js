@@ -25,18 +25,29 @@ router.get("/characters", async (req, res) => {
 });
 
 // une route pour récuperer dans les characters un personnage specifique
+
 router.get("/character/:characterId", async (req, res) => {
   try {
-    console.log("query =>", req.query);
-    console.log("params =>", req.params.characterId);
-    const response = await axios.get(
-      `https://lereacteur-marvel-api.herokuapp.com/character/${req.params.characterId}?apiKey=${process.env.MARVEL_API_KEY}`
-    );
-    console.log(response.data?.length || "La propriété attendue n'existe pas");
+    const characterId = req.params.characterId;
+    const apiKey = `apiKey=${process.env.MARVEL_API_KEY}`;
+    if (!apiKey) {
+      return res.status(400).json({ message: "Missing API key" });
+    }
+
+    const url = `https://lereacteur-marvel-api.herokuapp.com/character/${characterId}?apiKey=${apiKey}`;
+    const response = await axios.get(url);
+
+    // Si la réponse ne contient pas de données ou que la propriété attendue n'existe pas
+    if (!response.data || !response.data.results) {
+      return res.status(404).json({ message: "Character not found" });
+    }
+
+    // Envoie la réponse de l'API Marvel directement au client
     return res.status(200).json(response.data);
   } catch (error) {
+    // Log l'erreur complète pour un débogage plus facile
+    console.error(error);
     return res.status(500).json({ message: error.message });
   }
 });
-
 module.exports = router;
